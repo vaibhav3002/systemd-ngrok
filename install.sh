@@ -30,9 +30,19 @@ cp ngrok.yml /opt/ngrok
 sed -i "s/<add_your_token_here>/$1/g" /opt/ngrok/ngrok.yml
 
 cd /opt/ngrok
-wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-unzip ngrok-stable-linux-amd64.zip
-rm ngrok-stable-linux-amd64.zip
+
+arch=$(uname -i)
+if [[ $arch == x86_64* ]]; then
+  echo "X86 Architecture"
+	wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+	unzip ngrok-stable-linux-amd64.zip
+	rm ngrok-stable-linux-amd64.zip
+elif  [[ $arch == aarch64* ]]; then
+  echo "ARM64 Architecture"
+	wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-arm64.tgz
+	tar -xvzf ngrok-stable-linux-arm64.tgz
+	rm ngrok-stable-linux-arm64.tgz
+fi
 chmod +x ngrok
 
 systemctl enable ngrok.service
